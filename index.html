@@ -1,0 +1,305 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>ZeroLagGames | Play Free HTML5 Games</title>
+    <style>
+        /* Base Styling & Smooth Scrolling */
+        html {
+            scroll-behavior: smooth;
+        }
+        body {
+            margin: 0;
+            padding: 0;
+            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+            background-color: #0b0c10;
+            color: #ffffff;
+            overflow-x: hidden;
+        }
+
+        /* Top Navigation Bar */
+        nav {
+            position: fixed;
+            top: 0;
+            width: 100%;
+            height: 70px;
+            background: rgba(11, 12, 16, 0.85);
+            backdrop-filter: blur(10px);
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            padding: 0 50px;
+            box-sizing: border-box;
+            z-index: 1000;
+            border-bottom: 1px solid rgba(255, 255, 255, 0.1);
+        }
+        .logo {
+            font-size: 1.5rem;
+            font-weight: bold;
+            letter-spacing: 1px;
+            background: linear-gradient(45deg, #00ffcc, #0077ff);
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
+        }
+        .nav-links {
+            display: flex;
+            gap: 25px;
+        }
+        .nav-links a {
+            color: #ffffff;
+            text-decoration: none;
+            font-size: 1rem;
+            font-weight: 500;
+            transition: color 0.3s ease;
+        }
+        .nav-links a:hover, .nav-links a.active {
+            color: #00ffcc;
+        }
+
+        /* Hero Section with Wavy Background */
+        .hero {
+            height: 100vh;
+            display: flex;
+            flex-direction: column;
+            justify-content: center;
+            align-items: center;
+            text-align: center;
+            position: relative;
+            /* Animated gradient mimicking the wave video vibe */
+            background: linear-gradient(-45deg, #0f172a, #1e3a8a, #0f766e, #020617);
+            background-size: 400% 400%;
+            animation: gradientBG 15s ease infinite;
+            padding: 20px;
+        }
+        @keyframes gradientBG {
+            0% { background-position: 0% 50%; }
+            50% { background-position: 100% 50%; }
+            100% { background-position: 0% 50%; }
+        }
+
+        /* Glassmorphism Welcome Card */
+        .welcome-card {
+            background: rgba(255, 255, 255, 0.07);
+            backdrop-filter: blur(20px);
+            -webkit-backdrop-filter: blur(20px);
+            border: 1px solid rgba(255, 255, 255, 0.15);
+            padding: 50px 80px;
+            border-radius: 24px;
+            box-shadow: 0 20px 50px rgba(0, 0, 0, 0.3);
+            max-width: 600px;
+            width: 100%;
+            box-sizing: border-box;
+            animation: fadeIn 1.2s ease-out;
+        }
+        @keyframes fadeIn {
+            from { opacity: 0; transform: translateY(20px); }
+            to { opacity: 1; transform: translateY(0); }
+        }
+
+        /* Typing Effect Title */
+        .typing-text {
+            font-size: 3rem;
+            margin: 0 0 30px 0;
+            white-space: nowrap;
+            overflow: hidden;
+            border-right: 4px solid #00ffcc;
+            width: 0;
+            animation: typing 3.5s steps(30, end) infinite alternate, blink 0.75s step-end infinite;
+            background: linear-gradient(to right, #ffffff, #d1d5db);
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
+        }
+        @keyframes typing {
+            0% { width: 0; }
+            70%, 100% { width: 100%; } /* Pauses at the end of typing */
+        }
+        @keyframes blink {
+            from, to { border-color: transparent }
+            50% { border-color: #00ffcc; }
+        }
+
+        /* Call to Action Buttons */
+        .btn-main {
+            background: #ffffff;
+            color: #000000;
+            border: none;
+            padding: 12px 35px;
+            font-size: 0.9rem;
+            font-weight: bold;
+            text-transform: uppercase;
+            letter-spacing: 1px;
+            border-radius: 6px;
+            cursor: pointer;
+            transition: all 0.3s ease;
+            box-shadow: 0 4px 15px rgba(255, 255, 255, 0.1);
+        }
+        .btn-main:hover {
+            transform: translateY(-2px);
+            box-shadow: 0 6px 20px rgba(0, 255, 204, 0.4);
+            background: #00ffcc;
+        }
+        .btn-discord {
+            display: inline-block;
+            margin-top: 20px;
+            background: #000000;
+            color: #ffffff;
+            border: 1px solid rgba(255, 255, 255, 0.2);
+            padding: 10px 25px;
+            font-size: 0.8rem;
+            text-transform: uppercase;
+            letter-spacing: 1px;
+            text-decoration: none;
+            border-radius: 6px;
+            transition: all 0.3s ease;
+        }
+        .btn-discord:hover {
+            background: #5865F2; /* Discord Purple */
+            border-color: #5865F2;
+        }
+
+        /* Statistics Section (White/Light Background from the Video) */
+        .stats-section {
+            background-color: #f8fafc;
+            color: #0f172a;
+            padding: 60px 20px;
+            display: flex;
+            justify-content: center;
+            gap: 100px;
+            text-align: center;
+        }
+        .stat-box h2 {
+            font-size: 1.2rem;
+            color: #64748b;
+            margin: 0;
+            text-transform: uppercase;
+            letter-spacing: 1px;
+        }
+        .stat-box p {
+            font-size: 3.5rem;
+            font-weight: 800;
+            margin: 5px 0 0 0;
+        }
+
+        /* Relax Section (Black Background from the Video) */
+        .relax-section {
+            background-color: #000000;
+            padding: 100px 50px;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            gap: 80px;
+            max-width: 1200px;
+            margin: 0 auto;
+        }
+        .relax-logo {
+            width: 300px;
+            height: 300px;
+            background: linear-gradient(135deg, #701a75, #4c1d95);
+            border-radius: 24px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-size: 2.2rem;
+            font-weight: bold;
+            box-shadow: 0 10px 30px rgba(112, 26, 117, 0.3);
+            text-align: center;
+            padding: 20px;
+            box-sizing: border-box;
+        }
+        .relax-content {
+            max-width: 500px;
+        }
+        .relax-content h2 {
+            font-size: 2.5rem;
+            margin-top: 0;
+        }
+        .relax-content p {
+            color: #94a3b8;
+            font-size: 1.1rem;
+            line-height: 1.6;
+            margin-bottom: 30px;
+        }
+
+        /* Footer Links (Without the Email block) */
+        footer {
+            background-color: #000000;
+            padding: 40px 50px;
+            border-top: 1px solid rgba(255, 255, 255, 0.05);
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+        }
+        .footer-brand {
+            color: #475569;
+            font-size: 0.9rem;
+        }
+        .footer-links {
+            display: flex;
+            gap: 30px;
+        }
+        .footer-links a {
+            color: #94a3b8;
+            text-decoration: none;
+            font-size: 0.9rem;
+            transition: color 0.3s ease;
+        }
+        .footer-links a:hover {
+            color: #ffffff;
+        }
+    </style>
+</head>
+<body>
+
+    <nav>
+        <div class="logo">ZeroLagGames</div>
+        <div class="nav-links">
+            <a href="#" class="active">Home</a>
+            <a href="#games">Games</a>
+            <a href="#about">About</a>
+        </div>
+    </nav>
+
+    <section class="hero">
+        <div class="welcome-card">
+            <h1 class="typing-text">ZeroLagGames.</h1>
+            <button class="btn-main" onclick="window.location.href='#games'">Start Playing</button>
+            <br>
+            <a href="https://discord.gg/yourinvite" target="_blank" class="btn-discord">Join Our Discord Server (More Links!)</a>
+        </div>
+    </section>
+
+    <section class="stats-section">
+        <div class="stat-box">
+            <h2>Over</h2>
+            <p>65</p>
+            <span style="color: #64748b; font-weight: 500;">Games Available</span>
+        </div>
+        <div class="stat-box">
+            <h2>Over</h2>
+            <p>83,700</p>
+            <span style="color: #64748b; font-weight: 500;">Total Visits</span>
+        </div>
+    </section>
+
+    <section id="about" class="relax-section">
+        <div class="relax-logo">
+            ZeroLag<br>Games
+        </div>
+        <div class="relax-content">
+            <h2>Your place to relax.</h2>
+            <p>Are you looking for an unblocked, fast site where you can relax? You're in luck. ZeroLagGames offers a wide variety of web activities perfect for a break, whether you're handling downtime at school or unwinding at home.</p>
+            <button class="btn-main" onclick="window.location.href='#games'">Explore Games</button>
+        </div>
+    </section>
+
+    <footer>
+        <div class="footer-brand">&copy; 2026 ZeroLagGames. All rights reserved.</div>
+        <div class="footer-links">
+            <a href="#">Privacy Policy</a>
+            <a href="#">Terms of Service</a>
+        </div>
+    </footer>
+
+</body>
+</html>
