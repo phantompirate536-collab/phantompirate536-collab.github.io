@@ -14,7 +14,7 @@
             padding: 0;
             font-family: 'Segoe UI', Roboto, Helvetica, Arial, sans-serif;
             background-color: #030712;
-            color: #ffffff; /* Default site text color to white */
+            color: #ffffff; /* Universal text color set to sharp white */
             overflow-x: hidden;
         }
 
@@ -84,7 +84,7 @@
             box-sizing: border-box;
         }
 
-        /* Glowing Glassmorphism Main Card */
+        /* Glowing Glassmorphism Main Welcome Card */
         .welcome-card {
             background: rgba(255, 255, 255, 0.03);
             backdrop-filter: blur(25px);
@@ -109,7 +109,7 @@
             to { opacity: 1; transform: scale(1) translateY(0); }
         }
 
-        /* Steady Title Container */
+        /* Steady Title Container Container */
         .title-wrapper {
             display: inline-flex;
             justify-content: center;
@@ -119,7 +119,7 @@
             width: 100%;
         }
 
-        /* Typewriter Styling */
+        /* Typewriter Animation CSS Styling */
         .typing-text {
             font-size: 3.2rem;
             font-weight: 800;
@@ -135,7 +135,7 @@
             50% { border-color: #00ffcc; }
         }
 
-        /* Glass Action Buttons */
+        /* Glass Action Buttons Interface components */
         .btn-main {
             background: rgba(255, 255, 255, 0.07);
             color: #ffffff;
@@ -159,7 +159,7 @@
             box-shadow: 0 12px 25px rgba(255, 255, 255, 0.15);
         }
 
-        /* FIXED: Dark Translucent Glass Stats Container */
+        /* FIXED: Translucent Glass Metrics section (White block completely purged) */
         .stats-section {
             display: flex;
             justify-content: center;
@@ -174,7 +174,7 @@
             border-bottom: 1px solid rgba(255, 255, 255, 0.05);
         }
         
-        /* FIXED: Under Development is now Big Bold White Text */
+        /* FIXED: Under Development is transformed to full clean bold white text */
         .under-dev-text {
             font-size: 3.2rem;
             font-weight: 900;
@@ -185,18 +185,18 @@
             text-shadow: 0 0 15px rgba(255, 255, 255, 0.1);
         }
 
-        /* Visit Tracker Label Text Colors (Unbolded Muted Gray) */
+        /* Visitor Metric Tracker Category labels */
         .stat-label-gray {
             font-size: 1.1rem;
             font-weight: 400;
-            color: #94a3b8; 
+            color: #94a3b8; /* Calibrated sleek secondary gray text layout */
             text-transform: uppercase;
             letter-spacing: 2px;
             margin: 0;
             display: block;
         }
 
-        /* FIXED: Big Bold White Numbers Counter */
+        /* FIXED: Turn numeric output text to high contrast white display layout */
         .stat-number-white {
             font-size: 4.5rem;
             font-weight: 900;
@@ -208,13 +208,13 @@
             transition: transform 0.15s cubic-bezier(0.175, 0.885, 0.32, 1.275);
         }
         
-        /* YouTube-like Pop Highlight Flash on numeric change increments */
+        /* YouTube-like Pop Highlight physical transform bounce triggered instantly on live updates */
         .pop-animation {
             transform: scale(1.08);
-            color: #00ffcc; /* Temporarily flashes cyan on a global update tick */
+            color: #00ffcc; /* MOMENTARILY flashes arcade green when numbers tick up */
         }
 
-        /* Custom Brand Showcase Section */
+        /* Custom Brand Showcase Section Layouts */
         .brand-section {
             padding: 120px 50px;
             display: flex;
@@ -258,7 +258,7 @@
             margin-bottom: 35px;
         }
 
-        /* Glass Footer */
+        /* Translucent Glass Footer Blocks */
         footer {
             padding: 40px 50px;
             border-top: 1px solid rgba(255, 255, 255, 0.05);
@@ -341,7 +341,7 @@
 
     <script>
         /* Typewriter Configuration */
-        const words = ["ZeroLagGames.", "Play Free Games.", "Instant Action.", "Unblocked Fun."];
+        const words = ["ZeroLagGames.", "Play Free Games.", "Instant Action.", "Unblocked Fun.", "Oliver is gay"];
         let i = 0;
         let timer;
 
@@ -379,54 +379,75 @@
             loopDeleting();
         }
 
-        /* FIXED LIVE REAL-TIME REFRESH COUNTER ENGINE 
-           Uses a stable global cloud engine key linked to your project.
+        /* FIXED EXACT REAL-TIME LOGGING ENGINE
+           Auto-initializes missing namespace records on CounterAPI clusters smoothly.
         */
-        let globalTargetValue = 83700;
-        let currentRenderedValue = 83700;
+        const baseAnchorValue = 83700;
+        let lastKnownValue = baseAnchorValue;
+        
+        // Clean key definitions to guarantee zero 400 bad requests
+        const apiBase = "https://api.counterapi.dev/v1";
+        const namespace = "zlg-arcade";
+        const key = "main";
 
         function initializeLiveCounter() {
-            const baseAnchorValue = 83700;
-            // High-speed reliable counter infrastructure cluster
-            const registerURL = "https://api.counterapi.dev/v1/phantompirate536-collab/zerolaggames/up";
+            const counterBox = document.getElementById('visit-counter');
             
-            fetch(registerURL)
+            // Increment visitor counter on page load
+            fetch(`${apiBase}/${namespace}/${key}/up`)
                 .then(response => response.json())
                 .then(data => {
-                    globalTargetValue = baseAnchorValue + (data.value || 0);
-                    if (currentRenderedValue === baseAnchorValue) {
-                        currentRenderedValue = globalTargetValue;
-                        document.getElementById('visit-counter').innerText = globalTargetValue.toLocaleString();
+                    // If the server returns an error code (like 400 record not found), it means we need to explicitly create it
+                    if (data.code && data.code === 400) {
+                        createNamespaceRecord(counterBox);
+                    } else {
+                        renderExactValue(data.value || 1, counterBox);
                     }
                 })
                 .catch(() => {
-                    document.getElementById('visit-counter').innerText = baseAnchorValue.toLocaleString();
+                    counterBox.innerText = baseAnchorValue.toLocaleString();
                 });
 
-            // Active Background Synchronization Polling Loop (Listens for new users live every 4 seconds)
+            // Active Sync Polling Loop: Synchronizes external network views instantly every 3 seconds
             setInterval(() => {
-                fetch("https://api.counterapi.dev/v1/phantompirate536-collab/zerolaggames")
+                fetch(`${apiBase}/${namespace}/${key}`)
                     .then(response => response.json())
                     .then(data => {
-                        globalTargetValue = baseAnchorValue + (data.value || 0);
+                        if (!data.code) {
+                            renderExactValue(data.value || 0, counterBox);
+                        }
                     });
-            }, 4000);
+            }, 3000);
         }
 
-        // YouTube Style Smooth Tick Incrementor Loop
-        setInterval(() => {
-            const counterBox = document.getElementById('visit-counter');
-            if (currentRenderedValue < globalTargetValue) {
-                currentRenderedValue++;
-                counterBox.innerText = currentRenderedValue.toLocaleString();
-                
-                // Triggers flash popup motion
-                counterBox.classList.add('pop-animation');
-                setTimeout(() => counterBox.classList.remove('pop-animation'), 120);
-            }
-        }, 80);
+        // Helper function to force create the key record on the cluster if it's completely missing
+        function createNamespaceRecord(element) {
+            fetch(`${apiBase}/${namespace}/${key}/set?value=1`)
+                .then(res => res.json())
+                .then(data => {
+                    renderExactValue(1, element);
+                });
+        }
 
-        // Execute setups on load
+        // Logic framework that outputs exact sync numbers + pops text animations on changes
+        function renderExactValue(dbValue, counterBox) {
+            const exactTotal = baseAnchorValue + dbValue;
+            
+            if (exactTotal > lastKnownValue) {
+                lastKnownValue = exactTotal;
+                counterBox.innerText = exactTotal.toLocaleString();
+                
+                // Deploy micro structural text grow bounce
+                counterBox.classList.add('pop-animation');
+                setTimeout(() => counterBox.classList.remove('pop-animation'), 150);
+            } else if (counterBox.innerText === "83,700") {
+                // Initial page load alignment fallback
+                lastKnownValue = exactTotal;
+                counterBox.innerText = exactTotal.toLocaleString();
+            }
+        }
+
+        // Run uniform asset setups on loading events
         window.onload = function() {
             typingEffect();
             initializeLiveCounter();
