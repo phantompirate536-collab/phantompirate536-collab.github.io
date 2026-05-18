@@ -90,13 +90,18 @@
             backdrop-filter: blur(25px);
             -webkit-backdrop-filter: blur(25px);
             border: 1px solid rgba(255, 255, 255, 0.1);
-            padding: 60px 80px;
+            padding: 60px 40px;
             border-radius: 28px;
             box-shadow: 0 25px 50px -12px rgba(0, 0, 0, 0.5),
                         inset 0 1px 0 rgba(255, 255, 255, 0.1);
             max-width: 650px;
             width: 100%;
+            height: 280px; /* Fixed height stops card resizing when text deletes */
             box-sizing: border-box;
+            display: flex;
+            flex-direction: column;
+            justify-content: center;
+            align-items: center;
             animation: cardEntrance 1s cubic-bezier(0.16, 1, 0.3, 1);
         }
         @keyframes cardEntrance {
@@ -104,22 +109,26 @@
             to { opacity: 1; transform: scale(1) translateY(0); }
         }
 
-        /* Clean Typing Effect Title */
+        /* Steady Title Container (Prevents Text Jiggling left/right) */
+        .title-wrapper {
+            display: inline-flex;
+            justify-content: center;
+            align-items: center;
+            min-height: 4.5rem;
+            margin-bottom: 25px;
+            width: 100%;
+        }
+
+        /* Typewriter Styling */
         .typing-text {
             font-size: 3.2rem;
             font-weight: 800;
-            margin: 0 0 35px 0;
-            white-space: nowrap;
-            overflow: hidden;
-            border-right: 3px solid #00ffcc;
-            width: 0;
-            animation: typing 3.5s steps(14, end) infinite alternate, blink 0.75s step-end infinite;
             color: #ffffff;
             text-shadow: 0 0 20px rgba(255, 255, 255, 0.1);
-        }
-        @keyframes typing {
-            0% { width: 0; }
-            75%, 100% { width: 100%; }
+            border-right: 3px solid #00ffcc;
+            white-space: nowrap;
+            padding-right: 4px;
+            animation: blink 0.75s step-end infinite;
         }
         @keyframes blink {
             from, to { border-color: transparent }
@@ -223,7 +232,7 @@
             margin-bottom: 35px;
         }
 
-        /* Glass Footer (No email section) */
+        /* Glass Footer */
         footer {
             padding: 40px 50px;
             border-top: 1px solid rgba(255, 255, 255, 0.05);
@@ -266,7 +275,9 @@
 
     <section class="hero">
         <div class="welcome-card">
-            <h1 class="typing-text">ZeroLagGames.</h1>
+            <div class="title-wrapper">
+                <span id="typewriter" class="typing-text"></span>
+            </div>
             <button class="btn-main" onclick="window.location.href='#games'">Launch Arcade</button>
         </div>
     </section>
@@ -302,6 +313,49 @@
             <a href="#">Terms of Service</a>
         </div>
     </footer>
+
+    <script>
+        const words = ["ZeroLagGames.", "Play Free Games.", "Instant Action.", "Unblocked Fun."];
+        let i = 0;
+        let timer;
+
+        function typingEffect() {
+            let word = words[i].split("");
+            var loopTyping = function() {
+                if (word.length > 0) {
+                    document.getElementById('typewriter').innerHTML += word.shift();
+                } else {
+                    setTimeout(deletingEffect, 2000); // Pauses when a full phrase is finished typing
+                    return false;
+                }
+                timer = setTimeout(loopTyping, 100); // Speed of typing letters
+            };
+            loopTyping();
+        }
+
+        function deletingEffect() {
+            let word = words[i].split("");
+            var loopDeleting = function() {
+                if (word.length > 0) {
+                    word.pop();
+                    document.getElementById('typewriter').innerHTML = word.join("");
+                } else {
+                    if (words.length > (i + 1)) {
+                        i++;
+                    } else {
+                        i = 0;
+                    }
+                    setTimeout(typingEffect, 500); // Pause before typing the next word
+                    return false;
+                }
+                timer = setTimeout(loopDeleting, 50); // Speed of deleting letters
+            };
+            loopDeleting();
+        }
+
+        // Start the effect when the page loads
+        typingEffect();
+    </script>
 
 </body>
 </html>
