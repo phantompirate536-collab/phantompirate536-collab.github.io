@@ -3,7 +3,7 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>ZeroLagGames | Play Free HTML5 Games</title>
+    <title>ZeroLagGames | High-Performance Web Arcade</title>
     <style>
         /* Base Styling & Smooth Scrolling */
         html {
@@ -12,52 +12,67 @@
         body {
             margin: 0;
             padding: 0;
-            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
-            background-color: #0b0c10;
+            font-family: 'Segoe UI', Roboto, Helvetica, Arial, sans-serif;
+            background-color: #030712;
             color: #ffffff;
             overflow-x: hidden;
         }
 
-        /* Top Navigation Bar */
+        /* Dark Dynamic Mesh Background */
+        .bg-mesh {
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            z-index: -1;
+            background: radial-gradient(circle at 20% 30%, #0f172a 0%, transparent 40%),
+                        radial-gradient(circle at 80% 70%, #1e1b4b 0%, transparent 50%),
+                        radial-gradient(circle at 50% 50%, #030712 0%, #020617 100%);
+        }
+
+        /* Glassmorphism Navigation Bar */
         nav {
             position: fixed;
             top: 0;
             width: 100%;
-            height: 70px;
-            background: rgba(11, 12, 16, 0.85);
-            backdrop-filter: blur(10px);
+            height: 75px;
+            background: rgba(3, 7, 18, 0.4);
+            backdrop-filter: blur(16px);
+            -webkit-backdrop-filter: blur(16px);
             display: flex;
             justify-content: space-between;
             align-items: center;
             padding: 0 50px;
             box-sizing: border-box;
             z-index: 1000;
-            border-bottom: 1px solid rgba(255, 255, 255, 0.1);
+            border-bottom: 1px solid rgba(255, 255, 255, 0.08);
         }
         .logo {
-            font-size: 1.5rem;
-            font-weight: bold;
-            letter-spacing: 1px;
-            background: linear-gradient(45deg, #00ffcc, #0077ff);
+            font-size: 1.6rem;
+            font-weight: 800;
+            letter-spacing: 0.5px;
+            background: linear-gradient(45deg, #00ffcc, #00bfff);
             -webkit-background-clip: text;
             -webkit-text-fill-color: transparent;
         }
         .nav-links {
             display: flex;
-            gap: 25px;
+            gap: 30px;
         }
         .nav-links a {
-            color: #ffffff;
+            color: rgba(255, 255, 255, 0.7);
             text-decoration: none;
-            font-size: 1rem;
+            font-size: 0.95rem;
             font-weight: 500;
-            transition: color 0.3s ease;
+            transition: all 0.3s ease;
         }
         .nav-links a:hover, .nav-links a.active {
             color: #00ffcc;
+            text-shadow: 0 0 10px rgba(0, 255, 204, 0.3);
         }
 
-        /* Hero Section with Wavy Background */
+        /* Hero Section */
         .hero {
             height: 100vh;
             display: flex;
@@ -65,173 +80,160 @@
             justify-content: center;
             align-items: center;
             text-align: center;
-            position: relative;
-            /* Animated gradient mimicking the wave video vibe */
-            background: linear-gradient(-45deg, #0f172a, #1e3a8a, #0f766e, #020617);
-            background-size: 400% 400%;
-            animation: gradientBG 15s ease infinite;
             padding: 20px;
-        }
-        @keyframes gradientBG {
-            0% { background-position: 0% 50%; }
-            50% { background-position: 100% 50%; }
-            100% { background-position: 0% 50%; }
+            box-sizing: border-box;
         }
 
-        /* Glassmorphism Welcome Card */
+        /* Glowing Glassmorphism Main Card */
         .welcome-card {
-            background: rgba(255, 255, 255, 0.07);
-            backdrop-filter: blur(20px);
-            -webkit-backdrop-filter: blur(20px);
-            border: 1px solid rgba(255, 255, 255, 0.15);
-            padding: 50px 80px;
-            border-radius: 24px;
-            box-shadow: 0 20px 50px rgba(0, 0, 0, 0.3);
-            max-width: 600px;
+            background: rgba(255, 255, 255, 0.03);
+            backdrop-filter: blur(25px);
+            -webkit-backdrop-filter: blur(25px);
+            border: 1px solid rgba(255, 255, 255, 0.1);
+            padding: 60px 80px;
+            border-radius: 28px;
+            box-shadow: 0 25px 50px -12px rgba(0, 0, 0, 0.5),
+                        inset 0 1px 0 rgba(255, 255, 255, 0.1);
+            max-width: 650px;
             width: 100%;
             box-sizing: border-box;
-            animation: fadeIn 1.2s ease-out;
+            animation: cardEntrance 1s cubic-bezier(0.16, 1, 0.3, 1);
         }
-        @keyframes fadeIn {
-            from { opacity: 0; transform: translateY(20px); }
-            to { opacity: 1; transform: translateY(0); }
+        @keyframes cardEntrance {
+            from { opacity: 0; transform: scale(0.95) translateY(10px); }
+            to { opacity: 1; transform: scale(1) translateY(0); }
         }
 
-        /* Typing Effect Title */
+        /* Clean Typing Effect Title */
         .typing-text {
-            font-size: 3rem;
-            margin: 0 0 30px 0;
+            font-size: 3.2rem;
+            font-weight: 800;
+            margin: 0 0 35px 0;
             white-space: nowrap;
             overflow: hidden;
-            border-right: 4px solid #00ffcc;
+            border-right: 3px solid #00ffcc;
             width: 0;
-            animation: typing 3.5s steps(30, end) infinite alternate, blink 0.75s step-end infinite;
-            background: linear-gradient(to right, #ffffff, #d1d5db);
-            -webkit-background-clip: text;
-            -webkit-text-fill-color: transparent;
+            animation: typing 3.5s steps(14, end) infinite alternate, blink 0.75s step-end infinite;
+            color: #ffffff;
+            text-shadow: 0 0 20px rgba(255, 255, 255, 0.1);
         }
         @keyframes typing {
             0% { width: 0; }
-            70%, 100% { width: 100%; } /* Pauses at the end of typing */
+            75%, 100% { width: 100%; }
         }
         @keyframes blink {
             from, to { border-color: transparent }
             50% { border-color: #00ffcc; }
         }
 
-        /* Call to Action Buttons */
+        /* Glass Action Buttons */
         .btn-main {
-            background: #ffffff;
-            color: #000000;
-            border: none;
-            padding: 12px 35px;
-            font-size: 0.9rem;
-            font-weight: bold;
-            text-transform: uppercase;
-            letter-spacing: 1px;
-            border-radius: 6px;
-            cursor: pointer;
-            transition: all 0.3s ease;
-            box-shadow: 0 4px 15px rgba(255, 255, 255, 0.1);
-        }
-        .btn-main:hover {
-            transform: translateY(-2px);
-            box-shadow: 0 6px 20px rgba(0, 255, 204, 0.4);
-            background: #00ffcc;
-        }
-        .btn-discord {
-            display: inline-block;
-            margin-top: 20px;
-            background: #000000;
+            background: rgba(255, 255, 255, 0.07);
             color: #ffffff;
             border: 1px solid rgba(255, 255, 255, 0.2);
-            padding: 10px 25px;
-            font-size: 0.8rem;
+            backdrop-filter: blur(5px);
+            -webkit-backdrop-filter: blur(5px);
+            padding: 14px 40px;
+            font-size: 0.95rem;
+            font-weight: 600;
             text-transform: uppercase;
-            letter-spacing: 1px;
-            text-decoration: none;
-            border-radius: 6px;
-            transition: all 0.3s ease;
+            letter-spacing: 1.5px;
+            border-radius: 12px;
+            cursor: pointer;
+            transition: all 0.4s cubic-bezier(0.16, 1, 0.3, 1);
         }
-        .btn-discord:hover {
-            background: #5865F2; /* Discord Purple */
-            border-color: #5865F2;
+        .btn-main:hover {
+            background: #ffffff;
+            color: #000000;
+            border-color: #ffffff;
+            transform: translateY(-3px);
+            box-shadow: 0 12px 25px rgba(255, 255, 255, 0.15);
         }
 
-        /* Statistics Section (White/Light Background from the Video) */
+        /* Glass Statistics Section */
         .stats-section {
-            background-color: #f8fafc;
-            color: #0f172a;
-            padding: 60px 20px;
             display: flex;
             justify-content: center;
-            gap: 100px;
+            gap: 120px;
             text-align: center;
+            padding: 80px 20px;
+            background: rgba(255, 255, 255, 0.01);
+            backdrop-filter: blur(10px);
+            -webkit-backdrop-filter: blur(10px);
+            border-top: 1px solid rgba(255, 255, 255, 0.05);
+            border-bottom: 1px solid rgba(255, 255, 255, 0.05);
         }
         .stat-box h2 {
-            font-size: 1.2rem;
-            color: #64748b;
+            font-size: 1.1rem;
+            color: rgba(255, 255, 255, 0.4);
             margin: 0;
             text-transform: uppercase;
-            letter-spacing: 1px;
+            letter-spacing: 2px;
         }
         .stat-box p {
-            font-size: 3.5rem;
+            font-size: 4rem;
             font-weight: 800;
             margin: 5px 0 0 0;
+            background: linear-gradient(180deg, #ffffff, #94a3b8);
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
         }
 
-        /* Relax Section (Black Background from the Video) */
-        .relax-section {
-            background-color: #000000;
-            padding: 100px 50px;
+        /* Custom Brand Showcase Section */
+        .brand-section {
+            padding: 120px 50px;
             display: flex;
             justify-content: center;
             align-items: center;
             gap: 80px;
-            max-width: 1200px;
+            max-width: 1100px;
             margin: 0 auto;
         }
-        .relax-logo {
-            width: 300px;
-            height: 300px;
-            background: linear-gradient(135deg, #701a75, #4c1d95);
+        .brand-visual {
+            width: 320px;
+            height: 320px;
+            background: rgba(255, 255, 255, 0.02);
+            border: 1px solid rgba(255, 255, 255, 0.1);
+            backdrop-filter: blur(20px);
+            -webkit-backdrop-filter: blur(20px);
             border-radius: 24px;
             display: flex;
             align-items: center;
             justify-content: center;
-            font-size: 2.2rem;
-            font-weight: bold;
-            box-shadow: 0 10px 30px rgba(112, 26, 117, 0.3);
-            text-align: center;
-            padding: 20px;
-            box-sizing: border-box;
+            font-size: 2.4rem;
+            font-weight: 800;
+            letter-spacing: 1px;
+            box-shadow: inset 0 1px 2px rgba(255, 255, 255, 0.1);
+            color: #ffffff;
+            text-shadow: 0 0 15px rgba(255, 255, 255, 0.2);
         }
-        .relax-content {
-            max-width: 500px;
+        .brand-content {
+            max-width: 520px;
         }
-        .relax-content h2 {
-            font-size: 2.5rem;
+        .brand-content h2 {
+            font-size: 2.8rem;
+            font-weight: 800;
             margin-top: 0;
+            letter-spacing: -0.5px;
         }
-        .relax-content p {
-            color: #94a3b8;
-            font-size: 1.1rem;
-            line-height: 1.6;
-            margin-bottom: 30px;
+        .brand-content p {
+            color: rgba(255, 255, 255, 0.6);
+            font-size: 1.15rem;
+            line-height: 1.7;
+            margin-bottom: 35px;
         }
 
-        /* Footer Links (Without the Email block) */
+        /* Glass Footer (No email section) */
         footer {
-            background-color: #000000;
             padding: 40px 50px;
             border-top: 1px solid rgba(255, 255, 255, 0.05);
             display: flex;
             justify-content: space-between;
             align-items: center;
+            background: rgba(3, 7, 18, 0.6);
         }
         .footer-brand {
-            color: #475569;
+            color: rgba(255, 255, 255, 0.3);
             font-size: 0.9rem;
         }
         .footer-links {
@@ -239,17 +241,19 @@
             gap: 30px;
         }
         .footer-links a {
-            color: #94a3b8;
+            color: rgba(255, 255, 255, 0.5);
             text-decoration: none;
             font-size: 0.9rem;
             transition: color 0.3s ease;
         }
         .footer-links a:hover {
-            color: #ffffff;
+            color: #00ffcc;
         }
     </style>
 </head>
 <body>
+
+    <div class="bg-mesh"></div>
 
     <nav>
         <div class="logo">ZeroLagGames</div>
@@ -263,38 +267,36 @@
     <section class="hero">
         <div class="welcome-card">
             <h1 class="typing-text">ZeroLagGames.</h1>
-            <button class="btn-main" onclick="window.location.href='#games'">Start Playing</button>
-            <br>
-            <a href="https://discord.gg/yourinvite" target="_blank" class="btn-discord">Join Our Discord Server (More Links!)</a>
+            <button class="btn-main" onclick="window.location.href='#games'">Launch Arcade</button>
         </div>
     </section>
 
     <section class="stats-section">
         <div class="stat-box">
-            <h2>Over</h2>
-            <p>65</p>
-            <span style="color: #64748b; font-weight: 500;">Games Available</span>
+            <h2>Total Library</h2>
+            <p>65+</p>
+            <span style="color: rgba(255, 255, 255, 0.4); font-size: 0.9rem;">High-Speed Games</span>
         </div>
         <div class="stat-box">
-            <h2>Over</h2>
-            <p>83,700</p>
-            <span style="color: #64748b; font-weight: 500;">Total Visits</span>
+            <h2>Network Traffic</h2>
+            <p>83K+</p>
+            <span style="color: rgba(255, 255, 255, 0.4); font-size: 0.9rem;">Global Players</span>
         </div>
     </section>
 
-    <section id="about" class="relax-section">
-        <div class="relax-logo">
-            ZeroLag<br>Games
+    <section id="about" class="brand-section">
+        <div class="brand-visual">
+            ZLG
         </div>
-        <div class="relax-content">
-            <h2>Your place to relax.</h2>
-            <p>Are you looking for an unblocked, fast site where you can relax? You're in luck. ZeroLagGames offers a wide variety of web activities perfect for a break, whether you're handling downtime at school or unwinding at home.</p>
-            <button class="btn-main" onclick="window.location.href='#games'">Explore Games</button>
+        <div class="brand-content">
+            <h2>Built for pure performance.</h2>
+            <p>ZeroLagGames is our custom-built, optimized web arcade engineered for instantaneous gameplay. No bloatware, no heavy load times—just a completely clean environment built right into GitHub Pages to give you full-speed entertainment whenever you need a fast break.</p>
+            <button class="btn-main" onclick="window.location.href='#games'">View Games</button>
         </div>
     </section>
 
     <footer>
-        <div class="footer-brand">&copy; 2026 ZeroLagGames. All rights reserved.</div>
+        <div class="footer-brand">&copy; 2026 ZeroLagGames. All code is original and open-source.</div>
         <div class="footer-links">
             <a href="#">Privacy Policy</a>
             <a href="#">Terms of Service</a>
