@@ -14,7 +14,7 @@
             padding: 0;
             font-family: 'Segoe UI', Roboto, Helvetica, Arial, sans-serif;
             background-color: #030712;
-            color: #ffffff;
+            color: #ffffff; /* Sets default text color to white */
             overflow-x: hidden;
         }
 
@@ -159,7 +159,7 @@
             box-shadow: 0 12px 25px rgba(255, 255, 255, 0.15);
         }
 
-        /* Statistics Section (Clean Light Background from Reference Video) */
+        /* FIXED: Dark Glass Statistics Section (NO WHITE BACKGROUND) */
         .stats-section {
             display: flex;
             justify-content: center;
@@ -167,45 +167,49 @@
             gap: 120px;
             text-align: center;
             padding: 80px 20px;
-            background-color: #f8fafc;
-            border-top: 1px solid rgba(0, 0, 0, 0.05);
-            border-bottom: 1px solid rgba(0, 0, 0, 0.05);
+            background: rgba(255, 255, 255, 0.02); /* Clean translucent glass */
+            backdrop-filter: blur(12px);
+            -webkit-backdrop-filter: blur(12px);
+            border-top: 1px solid rgba(255, 255, 255, 0.05);
+            border-bottom: 1px solid rgba(255, 255, 255, 0.05);
         }
         
-        /* Under Development Layout styling */
+        /* Under Development Styling - Turned 100% White */
         .under-dev-text {
-            font-size: 3.5rem;
+            font-size: 3.2rem;
             font-weight: 900;
-            color: #000000;
+            color: #ffffff; /* Sharp bold white text */
             margin: 0;
             letter-spacing: -1px;
             text-transform: uppercase;
+            text-shadow: 0 0 15px rgba(255, 255, 255, 0.1);
         }
 
-        /* Visit Tracker Layout styling */
+        /* Visit Tracker Text Colors Fixed */
         .stat-label-gray {
             font-size: 1.1rem;
             font-weight: 400;
-            color: #64748b;
+            color: #94a3b8; /* Muted gray text label */
             text-transform: uppercase;
             letter-spacing: 2px;
             margin: 0;
             display: block;
         }
-        .stat-number-black {
+        .stat-number-white {
             font-size: 4.5rem;
             font-weight: 900;
-            color: #000000;
+            color: #ffffff; /* Sharp bold white number display */
             margin: 5px 0;
             line-height: 1;
             display: block;
-            transition: transform 0.1s ease-out;
+            text-shadow: 0 0 20px rgba(255, 255, 255, 0.15);
+            transition: transform 0.15s cubic-bezier(0.175, 0.885, 0.32, 1.275);
         }
         
-        /* Subtle pop animation class applied when the numbers tick */
+        /* Instant pop notification tracker triggers when counter spikes */
         .pop-animation {
-            transform: scale(1.03);
-            text-shadow: 0px 0px 10px rgba(0,0,0,0.1);
+            transform: scale(1.08);
+            color: #00ffcc; /* Flashes terminal green momentarily on update */
         }
 
         /* Custom Brand Showcase Section */
@@ -309,7 +313,7 @@
         
         <div class="stat-box">
             <span class="stat-label-gray">Over</span>
-            <span id="visit-counter" class="stat-number-black">83,700</span>
+            <span id="visit-counter" class="stat-number-white">83,700</span>
             <span class="stat-label-gray">Visits</span>
         </div>
     </section>
@@ -373,66 +377,64 @@
             loopDeleting();
         }
 
-        /* REAL-TIME LIVE COUNTER WITH TICK-UP ANIMATION
-          Fetches live globally tracked numbers and counts smoothly up to the destination value.
+        /* AUTOMATIC REAL-TIME HIT COUNTER ENGINE
+           Leverages an active tracking framework socket to trigger automated updates.
+           Tracks changes and flashes updates without manual screen refreshes.
         */
-        function getLiveGlobalVisits() {
-            const baseVisits = 83700;
-            const namespace = "phantompirate536-collab-github-io";
-            const key = "zerolaggames-visits";
+        let globalTargetValue = 83700;
+        let currentRenderedValue = 83700;
+
+        function initializeLiveCounter() {
+            const baseAnchorValue = 83700;
+            const databaseID = "zlg-global-live-traffic-tracker";
             
-            const script = document.createElement('script');
-            script.src = `https://api.countapi.xyz/hit/${namespace}/${key}?callback=animateCounterDisplay`;
+            // Connect to a fast, cloud-based hit counter engine
+            const trackerScript = document.createElement('script');
+            trackerScript.src = `https://api.countapi.xyz/hit/phantompirate536-collab/${databaseID}?callback=processIncomingTraffic`;
             
-            script.onerror = function() {
-                animateCount(baseVisits);
+            trackerScript.onerror = function() {
+                document.getElementById('visit-counter').innerText = baseAnchorValue.toLocaleString();
             };
-            
-            document.body.appendChild(script);
+            document.body.appendChild(trackerScript);
+
+            // Establish real-time tracking polling loop (Checks for new global user views every 4 seconds)
+            setInterval(() => {
+                const updatePoll = document.createElement('script');
+                const cacheBuster = Math.random().toString(36).substring(7); // Bypasses browser history tracking blocks
+                updatePoll.src = `https://api.countapi.xyz/get/phantompirate536-collab/${databaseID}?callback=processIncomingTraffic&nocache=${cacheBuster}`;
+                document.body.appendChild(updatePoll);
+            }, 4000);
         }
 
-        // Handles calculating the step differences and spinning up the counter live
-        function animateCounterDisplay(response) {
-            const baseVisits = 83700;
-            const liveHits = response.value || 0;
-            const targetTotal = baseVisits + liveHits;
-            
-            animateCount(targetTotal);
-        }
+        function processIncomingTraffic(data) {
+            const baseAnchorValue = 83700;
+            const liveNetworkHits = data.value || 0;
+            globalTargetValue = baseAnchorValue + liveNetworkHits;
 
-        function animateCount(target) {
-            const counterElement = document.getElementById('visit-counter');
-            let startValue = 83700; // The base baseline anchor
-            const duration = 1500; // Animation length in milliseconds (1.5 seconds)
-            const startTime = performance.now();
-
-            function updateNumber(now) {
-                const elapsed = now - startTime;
-                const progress = Math.min(elapsed / duration, 1);
-                
-                // Ease-out cubic formula for a slick slowing down fluid velocity spin
-                const easeOutCubic = 1 - Math.pow(1 - progress, 3);
-                const currentValue = Math.floor(startValue + (target - startValue) * easeOutCubic);
-                
-                counterElement.innerText = currentValue.toLocaleString();
-                
-                if (progress < 1) {
-                    requestAnimationFrame(updateNumber);
-                } else {
-                    // Final destination check and click scaling popup effect
-                    counterElement.innerText = target.toLocaleString();
-                    counterElement.classList.add('pop-animation');
-                    setTimeout(() => counterElement.classList.remove('pop-animation'), 150);
-                }
+            // Instantly hooks into numbers if the viewport engine is loading for the first time
+            if (currentRenderedValue === baseAnchorValue) {
+                currentRenderedValue = globalTargetValue;
+                document.getElementById('visit-counter').innerText = globalTargetValue.toLocaleString();
             }
-            
-            requestAnimationFrame(updateNumber);
         }
 
-        // Initialize execution sequences on structural assembly load
+        // Automated continuous verification engine updates numbers exactly like YouTube's architecture
+        setInterval(() => {
+            const counterBox = document.getElementById('visit-counter');
+            if (currentRenderedValue < globalTargetValue) {
+                currentRenderedValue++;
+                counterBox.innerText = currentRenderedValue.toLocaleString();
+                
+                // Triggers structural micro-pop animation mechanics 
+                counterBox.classList.add('pop-animation');
+                setTimeout(() => counterBox.classList.remove('pop-animation'), 120);
+            }
+        }, 80);
+
+        // Run functions immediately on load
         window.onload = function() {
             typingEffect();
-            getLiveGlobalVisits();
+            initializeLiveCounter();
         };
     </script>
 
