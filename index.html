@@ -96,7 +96,7 @@
                         inset 0 1px 0 rgba(255, 255, 255, 0.1);
             max-width: 650px;
             width: 100%;
-            height: 280px; /* Fixed height stops card resizing when text deletes */
+            height: 280px;
             box-sizing: border-box;
             display: flex;
             flex-direction: column;
@@ -109,7 +109,7 @@
             to { opacity: 1; transform: scale(1) translateY(0); }
         }
 
-        /* Steady Title Container (Prevents Text Jiggling left/right) */
+        /* Steady Title Container */
         .title-wrapper {
             display: inline-flex;
             justify-content: center;
@@ -159,33 +159,53 @@
             box-shadow: 0 12px 25px rgba(255, 255, 255, 0.15);
         }
 
-        /* Glass Statistics Section */
+        /* Statistics Section (Clean Light Background from Reference Video) */
         .stats-section {
             display: flex;
             justify-content: center;
+            align-items: center;
             gap: 120px;
             text-align: center;
             padding: 80px 20px;
-            background: rgba(255, 255, 255, 0.01);
-            backdrop-filter: blur(10px);
-            -webkit-backdrop-filter: blur(10px);
-            border-top: 1px solid rgba(255, 255, 255, 0.05);
-            border-bottom: 1px solid rgba(255, 255, 255, 0.05);
+            background-color: #f8fafc;
+            border-top: 1px solid rgba(0, 0, 0, 0.05);
+            border-bottom: 1px solid rgba(0, 0, 0, 0.05);
         }
-        .stat-box h2 {
-            font-size: 1.1rem;
-            color: rgba(255, 255, 255, 0.4);
+        
+        /* Under Development Layout styling */
+        .under-dev-text {
+            font-size: 3.5rem;
+            font-weight: 900;
+            color: #000000;
             margin: 0;
+            letter-spacing: -1px;
+            text-transform: uppercase;
+        }
+
+        /* Visit Tracker Layout styling */
+        .stat-label-gray {
+            font-size: 1.1rem;
+            font-weight: 400;
+            color: #64748b;
             text-transform: uppercase;
             letter-spacing: 2px;
+            margin: 0;
+            display: block;
         }
-        .stat-box p {
-            font-size: 4rem;
-            font-weight: 800;
-            margin: 5px 0 0 0;
-            background: linear-gradient(180deg, #ffffff, #94a3b8);
-            -webkit-background-clip: text;
-            -webkit-text-fill-color: transparent;
+        .stat-number-black {
+            font-size: 4.5rem;
+            font-weight: 900;
+            color: #000000;
+            margin: 5px 0;
+            line-height: 1;
+            display: block;
+            transition: transform 0.1s ease-out;
+        }
+        
+        /* Subtle pop animation class applied when the numbers tick */
+        .pop-animation {
+            transform: scale(1.03);
+            text-shadow: 0px 0px 10px rgba(0,0,0,0.1);
         }
 
         /* Custom Brand Showcase Section */
@@ -284,14 +304,13 @@
 
     <section class="stats-section">
         <div class="stat-box">
-            <h2>Total Library</h2>
-            <p>65+</p>
-            <span style="color: rgba(255, 255, 255, 0.4); font-size: 0.9rem;">High-Speed Games</span>
+            <p class="under-dev-text">Under Development</p>
         </div>
+        
         <div class="stat-box">
-            <h2>Network Traffic</h2>
-            <p>83K+</p>
-            <span style="color: rgba(255, 255, 255, 0.4); font-size: 0.9rem;">Global Players</span>
+            <span class="stat-label-gray">Over</span>
+            <span id="visit-counter" class="stat-number-black">83,700</span>
+            <span class="stat-label-gray">Visits</span>
         </div>
     </section>
 
@@ -315,7 +334,8 @@
     </footer>
 
     <script>
-        const words = ["ZeroLagGames", "Play Free Games", "Instant Action", "Unblocked Fun", "Oliver your gay"];
+        /* Typewriter Configuration */
+        const words = ["ZeroLagGames.", "Play Free Games.", "Instant Action.", "Unblocked Fun."];
         let i = 0;
         let timer;
 
@@ -325,10 +345,10 @@
                 if (word.length > 0) {
                     document.getElementById('typewriter').innerHTML += word.shift();
                 } else {
-                    setTimeout(deletingEffect, 2000); // Pauses when a full phrase is finished typing
+                    setTimeout(deletingEffect, 2000);
                     return false;
                 }
-                timer = setTimeout(loopTyping, 100); // Speed of typing letters
+                timer = setTimeout(loopTyping, 100);
             };
             loopTyping();
         }
@@ -345,16 +365,75 @@
                     } else {
                         i = 0;
                     }
-                    setTimeout(typingEffect, 500); // Pause before typing the next word
+                    setTimeout(typingEffect, 500);
                     return false;
                 }
-                timer = setTimeout(loopDeleting, 50); // Speed of deleting letters
+                timer = setTimeout(loopDeleting, 50);
             };
             loopDeleting();
         }
 
-        // Start the effect when the page loads
-        typingEffect();
+        /* REAL-TIME LIVE COUNTER WITH TICK-UP ANIMATION
+          Fetches live globally tracked numbers and counts smoothly up to the destination value.
+        */
+        function getLiveGlobalVisits() {
+            const baseVisits = 83700;
+            const namespace = "phantompirate536-collab-github-io";
+            const key = "zerolaggames-visits";
+            
+            const script = document.createElement('script');
+            script.src = `https://api.countapi.xyz/hit/${namespace}/${key}?callback=animateCounterDisplay`;
+            
+            script.onerror = function() {
+                animateCount(baseVisits);
+            };
+            
+            document.body.appendChild(script);
+        }
+
+        // Handles calculating the step differences and spinning up the counter live
+        function animateCounterDisplay(response) {
+            const baseVisits = 83700;
+            const liveHits = response.value || 0;
+            const targetTotal = baseVisits + liveHits;
+            
+            animateCount(targetTotal);
+        }
+
+        function animateCount(target) {
+            const counterElement = document.getElementById('visit-counter');
+            let startValue = 83700; // The base baseline anchor
+            const duration = 1500; // Animation length in milliseconds (1.5 seconds)
+            const startTime = performance.now();
+
+            function updateNumber(now) {
+                const elapsed = now - startTime;
+                const progress = Math.min(elapsed / duration, 1);
+                
+                // Ease-out cubic formula for a slick slowing down fluid velocity spin
+                const easeOutCubic = 1 - Math.pow(1 - progress, 3);
+                const currentValue = Math.floor(startValue + (target - startValue) * easeOutCubic);
+                
+                counterElement.innerText = currentValue.toLocaleString();
+                
+                if (progress < 1) {
+                    requestAnimationFrame(updateNumber);
+                } else {
+                    // Final destination check and click scaling popup effect
+                    counterElement.innerText = target.toLocaleString();
+                    counterElement.classList.add('pop-animation');
+                    setTimeout(() => counterElement.classList.remove('pop-animation'), 150);
+                }
+            }
+            
+            requestAnimationFrame(updateNumber);
+        }
+
+        // Initialize execution sequences on structural assembly load
+        window.onload = function() {
+            typingEffect();
+            getLiveGlobalVisits();
+        };
     </script>
 
 </body>
