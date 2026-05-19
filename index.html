@@ -332,9 +332,7 @@
     </footer>
 
     <script>
-        /* FORTIFIED INFINITE LOOP TYPEWRITER ENGINE 
-           Tracks positioning rules to run fluidly without crashing.
-        */
+        /* FORTIFIED INFINITE LOOP TYPEWRITER ENGINE */
         const words = ["ZeroLagGames.", "Play Free Games.", "Instant Action.", "Unblocked Fun."];
         let wordIndex = 0;
         let charIndex = 0;
@@ -357,25 +355,24 @@
             let typeSpeed = isDeleting ? 50 : 120;
 
             if (!isDeleting && charIndex === currentWord.length) {
-                typeSpeed = 2200; // Freeze complete word on screen for 2.2 seconds
+                typeSpeed = 2200; 
                 isDeleting = true;
             } else if (isDeleting && charIndex === 0) {
                 isDeleting = false;
-                wordIndex = (wordIndex + 1) % words.length; // Safe looping protection
+                wordIndex = (wordIndex + 1) % words.length; 
                 typeSpeed = 400; 
             }
 
             setTimeout(runTypewriter, typeSpeed);
         }
 
-        /* NORMALIZED LIVE TRACKING LOGIC 
-           Perfect connection. Every load triggers a precise +1 update.
+        /* BRAND NEW RESET COUNTER PATHWAY
+           Uses 'zlg-arcade-live' to wipe away any old cache locks from your PC browser.
         */
         const counterBox = document.getElementById('visit-counter');
-        const apiUrl = "https://api.counterapi.dev/v1/zlg-arcade/main/up";
+        const apiUrl = "https://api.counterapi.dev/v1/zlg-arcade-live/main/up";
 
         function updateCounterUI() {
-            // Appending a time parameter triggers dynamic network routing without breaking JSON format
             fetch(`${apiUrl}?t=${Date.now()}`)
                 .then(res => {
                     if (!res.ok) throw new Error('Network response error');
@@ -387,9 +384,8 @@
                     }
                 })
                 .catch(err => {
-                    console.log("Counter response lag, activating live backup layout...", err);
-                    // Safe Fallback: Read current metric directly if the up handler is congested
-                    fetch(`https://api.counterapi.dev/v1/zlg-arcade/main?t=${Date.now()}`)
+                    console.log("Activating backup sync layer...", err);
+                    fetch(`https://api.counterapi.dev/v1/zlg-arcade-live/main?t=${Date.now()}`)
                         .then(res => res.json())
                         .then(data => {
                             if (data && data.count !== undefined) {
