@@ -332,9 +332,7 @@
     </footer>
 
     <script>
-        /* FORTIFIED INFINITE LOOP TYPEWRITER ENGINE 
-           Protected variables tracking exact positions to prevent out-of-bounds loop crashes.
-        */
+        /* FORTIFIED INFINITE LOOP TYPEWRITER ENGINE */
         const words = ["ZeroLagGames.", "Play Free Games.", "Instant Action.", "Unblocked Fun."];
         let wordIndex = 0;
         let charIndex = 0;
@@ -356,15 +354,11 @@
 
             let typeSpeed = isDeleting ? 50 : 120;
 
-            // Word fully spelled out
             if (!isDeleting && charIndex === currentWord.length) {
-                typeSpeed = 2200; // Freeze word on screen for 2.2 seconds before deleting
+                typeSpeed = 2200; 
                 isDeleting = true;
-            } 
-            // Word completely deleted
-            else if (isDeleting && charIndex === 0) {
+            } else if (isDeleting && charIndex === 0) {
                 isDeleting = false;
-                // Safely loops back to 0 automatically when it finishes the array
                 wordIndex = (wordIndex + 1) % words.length;
                 typeSpeed = 400; 
             }
@@ -372,25 +366,34 @@
             setTimeout(runTypewriter, typeSpeed);
         }
 
-        /* CACHE-BUSTING LIVE TRACKING LOGIC 
-           Forces live data requests directly from the cluster, bypassing regional CDN locks.
+        /* NO-CACHE NETWORK PAYLOAD ENGINE
+           Completely destroys browser storage caching protocols using absolute network headers.
         */
         const counterBox = document.getElementById('visit-counter');
-        const apiUrl = "https://api.counterapi.dev/v1/zlg-arcade/main";
+        const apiUrl = "https://api.counterapi.dev/v1/zlg-arcade/main/up";
 
         function updateCounterUI() {
-            fetch(`${apiUrl}/up?cb=${new Date().getTime()}`)
-                .then(res => res.json())
-                .then(data => {
-                    if (data && data.count !== undefined) {
-                        counterBox.innerText = data.count.toLocaleString();
-                    }
-                })
-                .catch(() => {
-                    if (counterBox.innerText === "...") {
-                        counterBox.innerText = "2"; 
-                    }
-                });
+            // Using precise cache configuration parameters to force an actual server request
+            fetch(apiUrl, {
+                method: 'GET',
+                cache: 'no-store', 
+                headers: {
+                    'Cache-Control': 'no-cache, no-store, must-revalidate',
+                    'Pragma': 'no-cache',
+                    'Expires': '0'
+                }
+            })
+            .then(res => res.json())
+            .then(data => {
+                if (data && data.count !== undefined) {
+                    counterBox.innerText = data.count.toLocaleString();
+                }
+            })
+            .catch(() => {
+                if (counterBox.innerText === "...") {
+                    counterBox.innerText = "2"; 
+                }
+            });
         }
 
         window.onload = function() {
