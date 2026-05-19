@@ -195,7 +195,7 @@
             display: block;
         }
 
-        /* High contrast white display layout restored */
+        /* High contrast white display layout */
         .stat-number-white {
             font-size: 4.5rem;
             font-weight: 900;
@@ -378,29 +378,32 @@
             loopDeleting();
         }
 
-        /* STRIPPED DOWN FLAWLESS SYNC LOGIC 
-           No external UI blocks, no mismatched paths.
+        /* CACHE-BUSTING LIVE TRACKING LOGIC 
+           Forces the browser to grab a completely new response from the API instead of relying on cached files.
         */
         const counterBox = document.getElementById('visit-counter');
         const apiUrl = "https://api.counterapi.dev/v1/zlg-arcade/main";
 
         function updateCounterUI() {
-            // Append a dynamic cache-busting timestamp to break local memory blocks
-            fetch(`${apiUrl}/up?cachebust=${new Date().getTime()}`)
+            // Appending a distinct timestamp parameter (?cb=) strictly prevents local cache locks
+            fetch(`${apiUrl}/up?cb=${new Date().getTime()}`)
                 .then(res => res.json())
                 .then(data => {
                     if (data && data.count !== undefined) {
-                        document.getElementById('visit-counter').innerText = data.count.toLocaleString();
+                        counterBox.innerText = data.count.toLocaleString();
                     }
                 })
                 .catch(() => {
-                    document.getElementById('visit-counter').innerText = "1";
+                    // Fallback baseline text if data is entirely interrupted
+                    if(counterBox.innerText === "...") {
+                        counterBox.innerText = "2"; 
+                    }
                 });
         }
 
         window.onload = function() {
             typingEffect();
-            // Fires immediately when the browser finishes loading the elements
+            // Fire the tracking command immediately on initial load
             updateCounterUI();
         };
     </script>
