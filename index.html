@@ -14,7 +14,7 @@
             padding: 0;
             font-family: 'Segoe UI', Roboto, Helvetica, Arial, sans-serif;
             background-color: #030712;
-            color: #ffffff; /* Universal text color set to sharp white */
+            color: #ffffff; 
             overflow-x: hidden;
         }
 
@@ -109,7 +109,7 @@
             to { opacity: 1; transform: scale(1) translateY(0); }
         }
 
-        /* Steady Title Container Container */
+        /* Steady Title Container */
         .title-wrapper {
             display: inline-flex;
             justify-content: center;
@@ -159,7 +159,7 @@
             box-shadow: 0 12px 25px rgba(255, 255, 255, 0.15);
         }
 
-        /* FIXED: Translucent Glass Metrics section (White block completely purged) */
+        /* Translucent Glass Metrics section */
         .stats-section {
             display: flex;
             justify-content: center;
@@ -174,7 +174,6 @@
             border-bottom: 1px solid rgba(255, 255, 255, 0.05);
         }
         
-        /* FIXED: Under Development is transformed to full clean bold white text */
         .under-dev-text {
             font-size: 3.2rem;
             font-weight: 900;
@@ -189,14 +188,14 @@
         .stat-label-gray {
             font-size: 1.1rem;
             font-weight: 400;
-            color: #94a3b8; /* Calibrated sleek secondary gray text layout */
+            color: #94a3b8; 
             text-transform: uppercase;
             letter-spacing: 2px;
             margin: 0;
             display: block;
         }
 
-        /* FIXED: Turn numeric output text to high contrast white display layout */
+        /* High contrast white display layout */
         .stat-number-white {
             font-size: 4.5rem;
             font-weight: 900;
@@ -208,10 +207,10 @@
             transition: transform 0.15s cubic-bezier(0.175, 0.885, 0.32, 1.275);
         }
         
-        /* YouTube-like Pop Highlight physical transform bounce triggered instantly on live updates */
+        /* YouTube-like Pop Highlight bounce */
         .pop-animation {
             transform: scale(1.08);
-            color: #00ffcc; /* MOMENTARILY flashes arcade green when numbers tick up */
+            color: #00ffcc; 
         }
 
         /* Custom Brand Showcase Section Layouts */
@@ -315,7 +314,7 @@
         
         <div class="stat-box">
             <span class="stat-label-gray">Over</span>
-            <span id="visit-counter" class="stat-number-white">83,700</span>
+            <span id="visit-counter" class="stat-number-white">0</span>
             <span class="stat-label-gray">Visits</span>
         </div>
     </section>
@@ -341,7 +340,7 @@
 
     <script>
         /* Typewriter Configuration */
-        const words = ["ZeroLagGames.", "Play Free Games.", "Instant Action.", "Unblocked Fun.", "Oliver is gay"];
+        const words = ["ZeroLagGames.", "Play Free Games.", "Instant Action.", "Unblocked Fun.", "Hi Oliver and Matthew"];
         let i = 0;
         let timer;
 
@@ -380,12 +379,11 @@
         }
 
         /* FIXED EXACT REAL-TIME LOGGING ENGINE
-           Auto-initializes missing namespace records on CounterAPI clusters smoothly.
+           Base anchor set to 0. Target parameter reading count fixed.
         */
-        const baseAnchorValue = 83700;
+        const baseAnchorValue = 0; // FIXED: Resets base counter to absolute zero
         let lastKnownValue = baseAnchorValue;
         
-        // Clean key definitions to guarantee zero 400 bad requests
         const apiBase = "https://api.counterapi.dev/v1";
         const namespace = "zlg-arcade";
         const key = "main";
@@ -393,34 +391,32 @@
         function initializeLiveCounter() {
             const counterBox = document.getElementById('visit-counter');
             
-            // Increment visitor counter on page load
+            // 1. Sync and update database count on load
             fetch(`${apiBase}/${namespace}/${key}/up`)
                 .then(response => response.json())
                 .then(data => {
-                    // If the server returns an error code (like 400 record not found), it means we need to explicitly create it
                     if (data.code && data.code === 400) {
                         createNamespaceRecord(counterBox);
                     } else {
-                        renderExactValue(data.value || 1, counterBox);
+                        renderExactValue(data.count || 1, counterBox);
                     }
                 })
                 .catch(() => {
                     counterBox.innerText = baseAnchorValue.toLocaleString();
                 });
 
-            // Active Sync Polling Loop: Synchronizes external network views instantly every 3 seconds
+            // 2. Active Polling stream checking every 3 seconds
             setInterval(() => {
                 fetch(`${apiBase}/${namespace}/${key}`)
                     .then(response => response.json())
                     .then(data => {
                         if (!data.code) {
-                            renderExactValue(data.value || 0, counterBox);
+                            renderExactValue(data.count || 0, counterBox);
                         }
                     });
             }, 3000);
         }
 
-        // Helper function to force create the key record on the cluster if it's completely missing
         function createNamespaceRecord(element) {
             fetch(`${apiBase}/${namespace}/${key}/set?value=1`)
                 .then(res => res.json())
@@ -429,7 +425,6 @@
                 });
         }
 
-        // Logic framework that outputs exact sync numbers + pops text animations on changes
         function renderExactValue(dbValue, counterBox) {
             const exactTotal = baseAnchorValue + dbValue;
             
@@ -437,17 +432,15 @@
                 lastKnownValue = exactTotal;
                 counterBox.innerText = exactTotal.toLocaleString();
                 
-                // Deploy micro structural text grow bounce
+                // Active micro scale text animation flash
                 counterBox.classList.add('pop-animation');
                 setTimeout(() => counterBox.classList.remove('pop-animation'), 150);
-            } else if (counterBox.innerText === "83,700") {
-                // Initial page load alignment fallback
+            } else if (counterBox.innerText === "0") {
                 lastKnownValue = exactTotal;
                 counterBox.innerText = exactTotal.toLocaleString();
             }
         }
 
-        // Run uniform asset setups on loading events
         window.onload = function() {
             typingEffect();
             initializeLiveCounter();
