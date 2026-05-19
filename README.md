@@ -1,2 +1,2 @@
-# phantompirate536-collab.github.io
+# ZeroLagGames.github.io
 Game website
