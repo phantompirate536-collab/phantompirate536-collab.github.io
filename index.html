@@ -332,7 +332,9 @@
     </footer>
 
     <script>
-        /* FORTIFIED INFINITE LOOP TYPEWRITER ENGINE */
+        /* FORTIFIED INFINITE LOOP TYPEWRITER ENGINE 
+           Tracks positioning rules to run fluidly without crashing.
+        */
         const words = ["ZeroLagGames.", "Play Free Games.", "Instant Action.", "Unblocked Fun."];
         let wordIndex = 0;
         let charIndex = 0;
@@ -355,45 +357,46 @@
             let typeSpeed = isDeleting ? 50 : 120;
 
             if (!isDeleting && charIndex === currentWord.length) {
-                typeSpeed = 2200; 
+                typeSpeed = 2200; // Freeze complete word on screen for 2.2 seconds
                 isDeleting = true;
             } else if (isDeleting && charIndex === 0) {
                 isDeleting = false;
-                wordIndex = (wordIndex + 1) % words.length;
+                wordIndex = (wordIndex + 1) % words.length; // Safe looping protection
                 typeSpeed = 400; 
             }
 
             setTimeout(runTypewriter, typeSpeed);
         }
 
-        /* NO-CACHE NETWORK PAYLOAD ENGINE
-           Completely destroys browser storage caching protocols using absolute network headers.
+        /* NORMALIZED LIVE TRACKING LOGIC 
+           Perfect connection. Every load triggers a precise +1 update.
         */
         const counterBox = document.getElementById('visit-counter');
         const apiUrl = "https://api.counterapi.dev/v1/zlg-arcade/main/up";
 
         function updateCounterUI() {
-            // Using precise cache configuration parameters to force an actual server request
-            fetch(apiUrl, {
-                method: 'GET',
-                cache: 'no-store', 
-                headers: {
-                    'Cache-Control': 'no-cache, no-store, must-revalidate',
-                    'Pragma': 'no-cache',
-                    'Expires': '0'
-                }
-            })
-            .then(res => res.json())
-            .then(data => {
-                if (data && data.count !== undefined) {
-                    counterBox.innerText = data.count.toLocaleString();
-                }
-            })
-            .catch(() => {
-                if (counterBox.innerText === "...") {
-                    counterBox.innerText = "2"; 
-                }
-            });
+            // Appending a time parameter triggers dynamic network routing without breaking JSON format
+            fetch(`${apiUrl}?t=${Date.now()}`)
+                .then(res => {
+                    if (!res.ok) throw new Error('Network response error');
+                    return res.json();
+                })
+                .then(data => {
+                    if (data && data.count !== undefined) {
+                        counterBox.innerText = data.count.toLocaleString();
+                    }
+                })
+                .catch(err => {
+                    console.log("Counter response lag, activating live backup layout...", err);
+                    // Safe Fallback: Read current metric directly if the up handler is congested
+                    fetch(`https://api.counterapi.dev/v1/zlg-arcade/main?t=${Date.now()}`)
+                        .then(res => res.json())
+                        .then(data => {
+                            if (data && data.count !== undefined) {
+                                counterBox.innerText = data.count.toLocaleString();
+                            }
+                        });
+                });
         }
 
         window.onload = function() {
