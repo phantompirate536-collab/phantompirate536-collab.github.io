@@ -366,38 +366,74 @@
             setTimeout(runTypewriter, typeSpeed);
         }
 
-        /* BRAND NEW RESET COUNTER PATHWAY
-           Uses 'zlg-arcade-live' to wipe away any old cache locks from your PC browser.
+        /* LIVE REAL-TIME BATCH SYNC ENGINE 
+           Maintains real-time visual 1-50 intervals on screen while securely backing up data onto the cloud server.
         */
         const counterBox = document.getElementById('visit-counter');
-        const apiUrl = "https://api.counterapi.dev/v1/zlg-arcade-live/main/up";
+        const counterNameSpace = "zlg-arcade"; // Pulling straight from your original dataset tracking loop!
+        
+        let displayTotal = 0;      // Running number tracking live on screen
+        let accumulatedAmount = 0; // Local holder basket storing additions until the next database sync pass
 
-        function updateCounterUI() {
-            fetch(`${apiUrl}?t=${Date.now()}`)
-                .then(res => {
-                    if (!res.ok) throw new Error('Network response error');
-                    return res.json();
-                })
+        function syncWithAPI() {
+            // Fetch true baseline count from CounterAPI right away on load
+            fetch(`https://api.counterapi.dev/v1/${counterNameSpace}/main?t=${Date.now()}`)
+                .then(res => res.json())
                 .then(data => {
                     if (data && data.count !== undefined) {
-                        counterBox.innerText = data.count.toLocaleString();
+                        displayTotal = data.count;
+                        counterBox.innerText = displayTotal.toLocaleString();
+                        
+                        // Kick off the automated loop processes
+                        startFastTicker();
+                        startDatabaseSaver();
                     }
                 })
-                .catch(err => {
-                    console.log("Activating backup sync layer...", err);
-                    fetch(`https://api.counterapi.dev/v1/zlg-arcade-live/main?t=${Date.now()}`)
+                .catch(() => {
+                    // Fail-safe starting number if network congestion slows down initial retrieval
+                    displayTotal = 2540;
+                    counterBox.innerText = displayTotal.toLocaleString();
+                    startFastTicker();
+                    startDatabaseSaver();
+                });
+        }
+
+        function startFastTicker() {
+            // LOOP 1: Visually pushes your UI number forward by 1-50 every single second
+            setInterval(() => {
+                const randomVisits = Math.floor(Math.random() * 50) + 1;
+                displayTotal += randomVisits;
+                accumulatedAmount += randomVisits; // Increment total waiting for server push
+                
+                counterBox.innerText = displayTotal.toLocaleString();
+            }, 1000);
+        }
+
+        function startDatabaseSaver() {
+            // LOOP 2: Every 8 seconds, bundles up everything added on screen and pushes it to the API
+            setInterval(() => {
+                if (accumulatedAmount > 0) {
+                    const syncAmount = accumulatedAmount;
+                    accumulatedAmount = 0; // Empty local holder immediately to protect tracking accuracy
+                    
+                    // Directly sends custom score update package into your CounterAPI system
+                    fetch(`https://api.counterapi.dev/v1/${counterNameSpace}/main/up?count=${syncAmount}&t=${Date.now()}`)
                         .then(res => res.json())
                         .then(data => {
-                            if (data && data.count !== undefined) {
-                                counterBox.innerText = data.count.toLocaleString();
-                            }
+                            console.log("Batch successfully saved to database container! Cloud Total:", data.count);
+                        })
+                        .catch(err => {
+                            // If a temporary packet drop or local adblock block triggers, return values to retry next loop
+                            accumulatedAmount += syncAmount;
+                            console.log("Database write line crowded. Retrying batch sync next loop iteration...", err);
                         });
-                });
+                }
+            }, 8000);
         }
 
         window.onload = function() {
             runTypewriter();
-            updateCounterUI();
+            syncWithAPI(); 
         };
     </script>
 
