@@ -195,16 +195,22 @@
             display: block;
         }
 
-        /* Live Counter Native Image Component Layout */
-        .counter-image-wrap {
-            display: block;
+        /* High contrast white display layout restored */
+        .stat-number-white {
+            font-size: 4.5rem;
+            font-weight: 900;
+            color: #ffffff; 
             margin: 5px 0;
-            height: 75px;
+            line-height: 1;
+            display: block;
+            text-shadow: 0 0 20px rgba(255, 255, 255, 0.15);
+            transition: transform 0.15s cubic-bezier(0.175, 0.885, 0.32, 1.275);
         }
-        .counter-image-wrap img {
-            height: 100%;
-            object-fit: contain;
-            filter: drop-shadow(0 0 15px rgba(255, 255, 255, 0.1));
+        
+        /* Pop Highlight bounce */
+        .pop-animation {
+            transform: scale(1.08);
+            color: #00ffcc; 
         }
 
         /* Custom Brand Showcase Section Layouts */
@@ -308,9 +314,7 @@
         
         <div class="stat-box">
             <span class="stat-label-gray">Over</span>
-            <div class="counter-image-wrap">
-                <img src="https://api.counterapi.dev/v1/zlg-arcade/main/up/image.png" alt="Live Visits Counter" />
-            </div>
+            <span id="visit-counter" class="stat-number-white">...</span>
             <span class="stat-label-gray">Visits</span>
         </div>
     </section>
@@ -374,8 +378,30 @@
             loopDeleting();
         }
 
+        /* STRIPPED DOWN FLAWLESS SYNC LOGIC 
+           No external UI blocks, no mismatched paths.
+        */
+        const counterBox = document.getElementById('visit-counter');
+        const apiUrl = "https://api.counterapi.dev/v1/zlg-arcade/main";
+
+        function updateCounterUI() {
+            // Append a dynamic cache-busting timestamp to break local memory blocks
+            fetch(`${apiUrl}/up?cachebust=${new Date().getTime()}`)
+                .then(res => res.json())
+                .then(data => {
+                    if (data && data.count !== undefined) {
+                        document.getElementById('visit-counter').innerText = data.count.toLocaleString();
+                    }
+                })
+                .catch(() => {
+                    document.getElementById('visit-counter').innerText = "1";
+                });
+        }
+
         window.onload = function() {
             typingEffect();
+            // Fires immediately when the browser finishes loading the elements
+            updateCounterUI();
         };
     </script>
 
