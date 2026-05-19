@@ -204,6 +204,7 @@
             line-height: 1;
             display: block;
             text-shadow: 0 0 20px rgba(255, 255, 255, 0.15);
+            font-variant-numeric: tabular-nums; /* Keeps numbers from shifting horizontally as they roll up */
         }
 
         /* Custom Brand Showcase Section Layouts */
@@ -366,48 +367,54 @@
             setTimeout(runTypewriter, typeSpeed);
         }
 
-        /* GLOBAL TIME-SYNCHRONIZED PERSISTENT COUNTER
-           Guarantees the exact same active value (+25-50/sec) globally across all devices without an API.
+        /* YOUTUBE LIVE-STYLE PERSISTENT CLOCK SYNC COUNTER
+           Starts securely at a 1,000 baseline and gathers steady traffic 24/7.
+           Increments by a random range of 25-50 total visits every second, updating smoothly.
         */
         const counterBox = document.getElementById('visit-counter');
         
-        // 1. CHOOSE YOUR TARGET BASELINE DETAILS
         const baselineVisits = 1000; 
-        // This timestamp anchors our calculations firmly to a specific day/time
-        const anchorTimestamp = 1716155000000; 
-        // Average rate fixed tightly at exactly 37.5 visits per second (the middle of 25-50)
-        const averageVisitsPerSecond = 37.5; 
+        const anchorTimestamp = 1779220000000; // Fixed static coordinate historical anchor point
+        const averageVisitsPerSecond = 37.5;   // Midpoint formula calculation multiplier
+        
+        let targetTotal = 0;   // The absolute current universal count goal
+        let currentVisual = 0; // The animated display number sliding up smoothly on screen
 
-        let globalSyncedTotal = 0;
-
-        function calculateGlobalVisits() {
+        function getUniversalTotal() {
             const now = Date.now();
-            
-            // Determine exactly how many seconds have passed universally since our anchor point
-            const secondsElapsed = Math.max(0, Math.floor((now - anchorTimestamp) / 1000));
-            
-            // Calculate the absolute global persistent baseline value
-            globalSyncedTotal = baselineVisits + Math.floor(secondsElapsed * averageVisitsPerSecond);
-            
-            // Push the matching score into the UI element right away
-            counterBox.innerText = globalSyncedTotal.toLocaleString();
+            const secondsElapsed = Math.max(0, (now - anchorTimestamp) / 1000);
+            return baselineVisits + Math.floor(secondsElapsed * averageVisitsPerSecond);
         }
 
-        function startLiveGlobalCounter() {
-            // First calculation initializes the universal number instantly on load
-            calculateGlobalVisits();
-
-            // Run a steady local loop that increments by your desired active 25-50 range
+        function initLiveCounter() {
+            // Instantly look up the global clock to sync up with all global devices
+            targetTotal = getUniversalTotal();
+            currentVisual = targetTotal - 25; // Pulls back slightly to trigger initial load roll-up look
+            
+            // TARGET UPDATE LOOP: Generates your exact random 25-50 additions every second
             setInterval(() => {
-                const randomIncrement = Math.floor(Math.random() * (50 - 25 + 1)) + 25;
-                globalSyncedTotal += randomIncrement;
-                counterBox.innerText = globalSyncedTotal.toLocaleString();
+                const randomStep = Math.floor(Math.random() * (50 - 25 + 1)) + 25;
+                targetTotal += randomStep;
             }, 1000);
+
+            // SMOOTH YOUTUBE LIVE VISUAL TICKER: Updates 10 times a second (every 100ms)
+            // It rolls the digits up smoothly item-by-item to create the look of a live analytic dashboard
+            setInterval(() => {
+                if (currentVisual < targetTotal) {
+                    const difference = targetTotal - currentVisual;
+                    
+                    // Adaptive step sizing prevents stalling or leaping over counts unevenly
+                    const incrementStep = difference > 100 ? 12 : (difference > 10 ? 3 : 1);
+                    
+                    currentVisual += incrementStep;
+                    counterBox.innerText = currentVisual.toLocaleString();
+                }
+            }, 100);
         }
 
         window.onload = function() {
             runTypewriter();
-            startLiveGlobalCounter();
+            initLiveCounter();
         };
     </script>
 
