@@ -204,13 +204,6 @@
             line-height: 1;
             display: block;
             text-shadow: 0 0 20px rgba(255, 255, 255, 0.15);
-            transition: transform 0.15s cubic-bezier(0.175, 0.885, 0.32, 1.275);
-        }
-        
-        /* Pop Highlight bounce */
-        .pop-animation {
-            transform: scale(1.08);
-            color: #00ffcc; 
         }
 
         /* Custom Brand Showcase Section Layouts */
@@ -339,53 +332,53 @@
     </footer>
 
     <script>
-        /* Typewriter Configuration */
-        const words = ["ZeroLagGames.", "Play Free Games.", "Instant Action.", "Unblocked Fun.", "Hi Oliver and Matthew!];
-        let i = 0;
-        let timer;
+        /* FORTIFIED INFINITE LOOP TYPEWRITER ENGINE 
+           Protected variables tracking exact positions to prevent out-of-bounds loop crashes.
+        */
+        const words = ["ZeroLagGames.", "Play Free Games.", "Instant Action.", "Unblocked Fun."];
+        let wordIndex = 0;
+        let charIndex = 0;
+        let isDeleting = false;
 
-        function typingEffect() {
-            let word = words[i].split("");
-            var loopTyping = function() {
-                if (word.length > 0) {
-                    document.getElementById('typewriter').innerHTML += word.shift();
-                } else {
-                    setTimeout(deletingEffect, 2000);
-                    return false;
-                }
-                timer = setTimeout(loopTyping, 100);
-            };
-            loopTyping();
-        }
+        function runTypewriter() {
+            const targetElement = document.getElementById('typewriter');
+            if (!targetElement) return; 
 
-        function deletingEffect() {
-            let word = words[i].split("");
-            var loopDeleting = function() {
-                if (word.length > 0) {
-                    word.pop();
-                    document.getElementById('typewriter').innerHTML = word.join("");
-                } else {
-                    if (words.length > (i + 1)) {
-                        i++;
-                    } else {
-                        i = 0;
-                    }
-                    setTimeout(typingEffect, 500);
-                    return false;
-                }
-                timer = setTimeout(loopDeleting, 50);
-            };
-            loopDeleting();
+            const currentWord = words[wordIndex];
+            
+            if (isDeleting) {
+                targetElement.innerHTML = currentWord.substring(0, charIndex - 1);
+                charIndex--;
+            } else {
+                targetElement.innerHTML = currentWord.substring(0, charIndex + 1);
+                charIndex++;
+            }
+
+            let typeSpeed = isDeleting ? 50 : 120;
+
+            // Word fully spelled out
+            if (!isDeleting && charIndex === currentWord.length) {
+                typeSpeed = 2200; // Freeze word on screen for 2.2 seconds before deleting
+                isDeleting = true;
+            } 
+            // Word completely deleted
+            else if (isDeleting && charIndex === 0) {
+                isDeleting = false;
+                // Safely loops back to 0 automatically when it finishes the array
+                wordIndex = (wordIndex + 1) % words.length;
+                typeSpeed = 400; 
+            }
+
+            setTimeout(runTypewriter, typeSpeed);
         }
 
         /* CACHE-BUSTING LIVE TRACKING LOGIC 
-           Forces the browser to grab a completely new response from the API instead of relying on cached files.
+           Forces live data requests directly from the cluster, bypassing regional CDN locks.
         */
         const counterBox = document.getElementById('visit-counter');
         const apiUrl = "https://api.counterapi.dev/v1/zlg-arcade/main";
 
         function updateCounterUI() {
-            // Appending a distinct timestamp parameter (?cb=) strictly prevents local cache locks
             fetch(`${apiUrl}/up?cb=${new Date().getTime()}`)
                 .then(res => res.json())
                 .then(data => {
@@ -394,16 +387,14 @@
                     }
                 })
                 .catch(() => {
-                    // Fallback baseline text if data is entirely interrupted
-                    if(counterBox.innerText === "...") {
+                    if (counterBox.innerText === "...") {
                         counterBox.innerText = "2"; 
                     }
                 });
         }
 
         window.onload = function() {
-            typingEffect();
-            // Fire the tracking command immediately on initial load
+            runTypewriter();
             updateCounterUI();
         };
     </script>
