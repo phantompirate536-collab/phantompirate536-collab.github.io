@@ -3,420 +3,77 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>ZeroLagGames | High-Performance Web Arcade</title>
+    <title>Drive Mad - ArcadeHub</title>
     <style>
-        /* Base Styling & Smooth Scrolling */
-        html {
-            scroll-behavior: smooth;
-        }
-        body {
+        * {
             margin: 0;
             padding: 0;
-            font-family: 'Segoe UI', Roboto, Helvetica, Arial, sans-serif;
-            background-color: #030712;
-            color: #ffffff; 
-            overflow-x: hidden;
-        }
-
-        /* Dark Dynamic Mesh Background */
-        .bg-mesh {
-            position: fixed;
-            top: 0;
-            left: 0;
-            width: 100%;
-            height: 100%;
-            z-index: -1;
-            background: radial-gradient(circle at 20% 30%, #0f172a 0%, transparent 40%),
-                        radial-gradient(circle at 80% 70%, #1e1b4b 0%, transparent 50%),
-                        radial-gradient(circle at 50% 50%, #030712 0%, #020617 100%);
-        }
-
-        /* Glassmorphism Navigation Bar */
-        nav {
-            position: fixed;
-            top: 0;
-            width: 100%;
-            height: 75px;
-            background: rgba(3, 7, 18, 0.4);
-            backdrop-filter: blur(16px);
-            -webkit-backdrop-filter: blur(16px);
-            display: flex;
-            justify-content: space-between;
-            align-items: center;
-            padding: 0 50px;
             box-sizing: border-box;
-            z-index: 1000;
-            border-bottom: 1px solid rgba(255, 255, 255, 0.08);
-        }
-        .logo {
-            font-size: 1.6rem;
-            font-weight: 800;
-            letter-spacing: 0.5px;
-            background: linear-gradient(45deg, #00ffcc, #00bfff);
-            -webkit-background-clip: text;
-            -webkit-text-fill-color: transparent;
-        }
-        .nav-links {
-            display: flex;
-            gap: 30px;
-        }
-        .nav-links a {
-            color: rgba(255, 255, 255, 0.7);
-            text-decoration: none;
-            font-size: 0.95rem;
-            font-weight: 500;
-            transition: all 0.3s ease;
-        }
-        .nav-links a:hover, .nav-links a.active {
-            color: #00ffcc;
-            text-shadow: 0 0 10px rgba(0, 255, 204, 0.3);
+            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
         }
 
-        /* Hero Section */
-        .hero {
+        body {
+            background-color: #0f1016;
+            color: #f0f0f5;
             height: 100vh;
             display: flex;
             flex-direction: column;
-            justify-content: center;
-            align-items: center;
-            text-align: center;
-            padding: 20px;
-            box-sizing: border-box;
+            overflow: hidden;
         }
 
-        /* Glowing Glassmorphism Main Welcome Card */
-        .welcome-card {
-            background: rgba(255, 255, 255, 0.03);
-            backdrop-filter: blur(25px);
-            -webkit-backdrop-filter: blur(25px);
-            border: 1px solid rgba(255, 255, 255, 0.1);
-            padding: 60px 40px;
-            border-radius: 28px;
-            box-shadow: 0 25px 50px -12px rgba(0, 0, 0, 0.5),
-                        inset 0 1px 0 rgba(255, 255, 255, 0.1);
-            max-width: 650px;
-            width: 100%;
-            height: 280px;
-            box-sizing: border-box;
-            display: flex;
-            flex-direction: column;
-            justify-content: center;
-            align-items: center;
-            animation: cardEntrance 1s cubic-bezier(0.16, 1, 0.3, 1);
-        }
-        @keyframes cardEntrance {
-            from { opacity: 0; transform: scale(0.95) translateY(10px); }
-            to { opacity: 1; transform: scale(1) translateY(0); }
-        }
-
-        /* Steady Title Container */
-        .title-wrapper {
-            display: inline-flex;
-            justify-content: center;
-            align-items: center;
-            min-height: 4.5rem;
-            margin-bottom: 25px;
-            width: 100%;
-        }
-
-        /* Typewriter Animation CSS Styling */
-        .typing-text {
-            font-size: 3.2rem;
-            font-weight: 800;
-            color: #ffffff;
-            text-shadow: 0 0 20px rgba(255, 255, 255, 0.1);
-            border-right: 3px solid #00ffcc;
-            white-space: nowrap;
-            padding-right: 4px;
-            animation: blink 0.75s step-end infinite;
-        }
-        @keyframes blink {
-            from, to { border-color: transparent }
-            50% { border-color: #00ffcc; }
-        }
-
-        /* Glass Action Buttons Interface components */
-        .btn-main {
-            background: rgba(255, 255, 255, 0.07);
-            color: #ffffff;
-            border: 1px solid rgba(255, 255, 255, 0.2);
-            backdrop-filter: blur(5px);
-            -webkit-backdrop-filter: blur(5px);
-            padding: 14px 40px;
-            font-size: 0.95rem;
-            font-weight: 600;
-            text-transform: uppercase;
-            letter-spacing: 1.5px;
-            border-radius: 12px;
-            cursor: pointer;
-            transition: all 0.4s cubic-bezier(0.16, 1, 0.3, 1);
-        }
-        .btn-main:hover {
-            background: #ffffff;
-            color: #000000;
-            border-color: #ffffff;
-            transform: translateY(-3px);
-            box-shadow: 0 12px 25px rgba(255, 255, 255, 0.15);
-        }
-
-        /* Translucent Glass Metrics section */
-        .stats-section {
-            display: flex;
-            justify-content: center;
-            align-items: center;
-            gap: 120px;
-            text-align: center;
-            padding: 80px 20px;
-            background: rgba(255, 255, 255, 0.02); 
-            backdrop-filter: blur(12px);
-            -webkit-backdrop-filter: blur(12px);
-            border-top: 1px solid rgba(255, 255, 255, 0.05);
-            border-bottom: 1px solid rgba(255, 255, 255, 0.05);
-        }
-        
-        .under-dev-text {
-            font-size: 3.2rem;
-            font-weight: 900;
-            color: #ffffff; 
-            margin: 0;
-            letter-spacing: -1px;
-            text-transform: uppercase;
-            text-shadow: 0 0 15px rgba(255, 255, 255, 0.1);
-        }
-
-        /* Visitor Metric Tracker Category labels */
-        .stat-label-gray {
-            font-size: 1.1rem;
-            font-weight: 400;
-            color: #94a3b8; 
-            text-transform: uppercase;
-            letter-spacing: 2px;
-            margin: 0;
-            display: block;
-        }
-
-        /* High contrast white display layout */
-        .stat-number-white {
-            font-size: 4.5rem;
-            font-weight: 900;
-            color: #ffffff; 
-            margin: 5px 0;
-            line-height: 1;
-            display: block;
-            text-shadow: 0 0 20px rgba(255, 255, 255, 0.15);
-            font-variant-numeric: tabular-nums; /* Keeps numbers from shifting horizontally as they roll up */
-        }
-
-        /* Custom Brand Showcase Section Layouts */
-        .brand-section {
-            padding: 120px 50px;
-            display: flex;
-            justify-content: center;
-            align-items: center;
-            gap: 80px;
-            max-width: 1100px;
-            margin: 0 auto;
-        }
-        .brand-visual {
-            width: 320px;
-            height: 320px;
-            background: rgba(255, 255, 255, 0.02);
-            border: 1px solid rgba(255, 255, 255, 0.1);
-            backdrop-filter: blur(20px);
-            -webkit-backdrop-filter: blur(20px);
-            border-radius: 24px;
-            display: flex;
-            align-items: center;
-            justify-content: center;
-            font-size: 2.4rem;
-            font-weight: 800;
-            letter-spacing: 1px;
-            box-shadow: inset 0 1px 2px rgba(255, 255, 255, 0.1);
-            color: #ffffff;
-            text-shadow: 0 0 15px rgba(255, 255, 255, 0.2);
-        }
-        .brand-content {
-            max-width: 520px;
-        }
-        .brand-content h2 {
-            font-size: 2.8rem;
-            font-weight: 800;
-            margin-top: 0;
-            letter-spacing: -0.5px;
-        }
-        .brand-content p {
-            color: rgba(255, 255, 255, 0.6);
-            font-size: 1.15rem;
-            line-height: 1.7;
-            margin-bottom: 35px;
-        }
-
-        /* Translucent Glass Footer Blocks */
-        footer {
-            padding: 40px 50px;
-            border-top: 1px solid rgba(255, 255, 255, 0.05);
+        header {
+            background-color: #171923;
+            padding: 0.8rem 1.5rem;
+            border-bottom: 1px solid #2d3748;
             display: flex;
             justify-content: space-between;
             align-items: center;
-            background: rgba(3, 7, 18, 0.6);
         }
-        .footer-brand {
-            color: rgba(255, 255, 255, 0.3);
-            font-size: 0.9rem;
-        }
-        .footer-links {
-            display: flex;
-            gap: 30px;
-        }
-        .footer-links a {
-            color: rgba(255, 255, 255, 0.5);
-            text-decoration: none;
-            font-size: 0.9rem;
-            transition: color 0.3s ease;
-        }
-        .footer-links a:hover {
+
+        .logo {
             color: #00ffcc;
+            font-size: 1.2rem;
+            display: flex;
+            align-items: center;
+            gap: 0.5rem;
+        }
+
+        .game-wrapper {
+            flex: 1;
+            width: 100%;
+            height: 100%;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            background: #000;
+        }
+
+        iframe {
+            width: 100%;
+            height: 100%;
+            border: none;
         }
     </style>
 </head>
 <body>
 
-    <div class="bg-mesh"></div>
-
-    <nav>
-        <div class="logo">ZeroLagGames</div>
-        <div class="nav-links">
-            <a href="#" class="active">Home</a>
-            <a href="#games">Games</a>
-            <a href="#about">About</a>
+    <header>
+        <div class="logo">
+            🕹️ <span>Drive Mad (200 Levels)</span>
         </div>
-    </nav>
+    </header>
 
-    <section class="hero">
-        <div class="welcome-card">
-            <div class="title-wrapper">
-                <span id="typewriter" class="typing-text"></span>
-            </div>
-            <button class="btn-main" onclick="window.location.href='#games'">Launch Arcade</button>
-        </div>
-    </section>
-
-    <section class="stats-section">
-        <div class="stat-box">
-            <p class="under-dev-text">Under Development</p>
-        </div>
-        
-        <div class="stat-box">
-            <span class="stat-label-gray">Over</span>
-            <span id="visit-counter" class="stat-number-white">...</span>
-            <span class="stat-label-gray">Visits</span>
-        </div>
-    </section>
-
-    <section id="about" class="brand-section">
-        <div class="brand-visual">
-            ZLG
-        </div>
-        <div class="brand-content">
-            <h2>Built for pure performance.</h2>
-            <p>ZeroLagGames is our custom-built, optimized web arcade engineered for instantaneous gameplay. No bloatware, no heavy load times—just a completely clean environment built right into GitHub Pages to give you full-speed entertainment whenever you need a fast break.</p>
-            <button class="btn-main" onclick="window.location.href='#games'">View Games</button>
-        </div>
-    </section>
-
-    <footer>
-        <div class="footer-brand">&copy; 2026 ZeroLagGames. All code is original and open-source.</div>
-        <div class="footer-links">
-            <a href="#">Privacy Policy</a>
-            <a href="#">Terms of Service</a>
-        </div>
-    </footer>
-
-    <script>
-        /* FORTIFIED INFINITE LOOP TYPEWRITER ENGINE */
-        const words = ["ZeroLagGames.", "Play Free Games.", "Instant Action.", "Unblocked Fun.", "Hi Oliver and Matthew"];
-        let wordIndex = 0;
-        let charIndex = 0;
-        let isDeleting = false;
-
-        function runTypewriter() {
-            const targetElement = document.getElementById('typewriter');
-            if (!targetElement) return; 
-
-            const currentWord = words[wordIndex];
-            
-            if (isDeleting) {
-                targetElement.innerHTML = currentWord.substring(0, charIndex - 1);
-                charIndex--;
-            } else {
-                targetElement.innerHTML = currentWord.substring(0, charIndex + 1);
-                charIndex++;
-            }
-
-            let typeSpeed = isDeleting ? 50 : 120;
-
-            if (!isDeleting && charIndex === currentWord.length) {
-                typeSpeed = 2200; 
-                isDeleting = true;
-            } else if (isDeleting && charIndex === 0) {
-                isDeleting = false;
-                wordIndex = (wordIndex + 1) % words.length; 
-                typeSpeed = 400; 
-            }
-
-            setTimeout(runTypewriter, typeSpeed);
-        }
-
-        /* YOUTUBE LIVE-STYLE PERSISTENT CLOCK SYNC COUNTER
-           Starts securely at a 1,000 baseline and gathers steady traffic 24/7.
-           Increments by a random range of 25-50 total visits every second, updating smoothly.
-        */
-        const counterBox = document.getElementById('visit-counter');
-        
-        const baselineVisits = 1000; 
-        const anchorTimestamp = 1779220000000; // Fixed static coordinate historical anchor point
-        const averageVisitsPerSecond = 37.5;   // Midpoint formula calculation multiplier
-        
-        let targetTotal = 0;   // The absolute current universal count goal
-        let currentVisual = 0; // The animated display number sliding up smoothly on screen
-
-        function getUniversalTotal() {
-            const now = Date.now();
-            const secondsElapsed = Math.max(0, (now - anchorTimestamp) / 1000);
-            return baselineVisits + Math.floor(secondsElapsed * averageVisitsPerSecond);
-        }
-
-        function initLiveCounter() {
-            // Instantly look up the global clock to sync up with all global devices
-            targetTotal = getUniversalTotal();
-            currentVisual = targetTotal - 25; // Pulls back slightly to trigger initial load roll-up look
-            
-            // TARGET UPDATE LOOP: Generates your exact random 25-50 additions every second
-            setInterval(() => {
-                const randomStep = Math.floor(Math.random() * (50 - 25 + 1)) + 25;
-                targetTotal += randomStep;
-            }, 1000);
-
-            // SMOOTH YOUTUBE LIVE VISUAL TICKER: Updates 10 times a second (every 100ms)
-            // It rolls the digits up smoothly item-by-item to create the look of a live analytic dashboard
-            setInterval(() => {
-                if (currentVisual < targetTotal) {
-                    const difference = targetTotal - currentVisual;
-                    
-                    // Adaptive step sizing prevents stalling or leaping over counts unevenly
-                    const incrementStep = difference > 100 ? 12 : (difference > 10 ? 3 : 1);
-                    
-                    currentVisual += incrementStep;
-                    counterBox.innerText = currentVisual.toLocaleString();
-                }
-            }, 100);
-        }
-
-        window.onload = function() {
-            runTypewriter();
-            initLiveCounter();
-        };
-    </script>
+    <div class="game-wrapper">
+        <iframe id="game-element" 
+            allowfullscreen="true" 
+            allow="autoplay; fullscreen; camera; focus-without-user-activation *; monetization; gamepad; keyboard-map *; xr-spatial-tracking; clipboard-write; web-share; accelerometer; magnetometer; gyroscope; microphone *; screen-wake-lock" 
+            name="gameFrame" 
+            scrolling="no" 
+            sandbox="allow-forms allow-modals allow-orientation-lock allow-pointer-lock allow-popups allow-popups-to-escape-sandbox allow-presentation allow-scripts allow-same-origin allow-downloads" 
+            src="https://games.poki.com/458768/f9564e4e-ef25-4e4b-ba67-cb11a1576bbd?tag=pg-79d4ee67d02c56da1b8cdd17ea529f764d0c466e&site_id=3&iso_lang=en&country=US&poki_url=https://poki.com/en/g/drive-mad&hoist=yes&nonPersonalized=n&cloudsavegames=n&familyFriendly=n&device=desktop&categories=1,76,78,93,103,377,390,893,929,1139,1140,1185,1190,1193&special_condition=landing&user_id=arRZipIoWwpYYbGcyszPkQ" 
+            title="Game">
+        </iframe>
+    </div>
 
 </body>
 </html>
