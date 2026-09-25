@@ -3,29 +3,30 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Drive Mad - ArcadeHub</title>
-    <link rel="stylesheet" href="styles.css">
+    <title>Fancade Embed</title>
+    <style>
+        /* Reset margins and overflow to ensure a true full-screen layout */
+        html, body {
+            margin: 0;
+            padding: 0;
+            width: 100%;
+            height: 100%;
+            overflow: hidden;
+            background-color: #121212; /* Dark background color while loading */
+        }
+
+        /* Style the iframe to fill the entire viewport */
+        #fancade {
+            display: block;
+            width: 100%;
+            height: 100%;
+            border: none;
+        }
+    </style>
 </head>
 <body>
 
-    <header>
-        <div class="logo">
-            🕹️ <span>Drive Mad (200 Levels)</span>
-        </div>
-    </header>
-
-    <div class="game-wrapper">
-        <iframe id="gameDetail-iframe" 
-            class="game-iframe-stage__frame" 
-            src="https://YOUR_SOURCE_DOMAIN_HERE.com/embed/index.html?id=drive-mad" 
-            title="Drive Mad" 
-            frameborder="0" 
-            scrolling="auto" 
-            allow="autoplay; fullscreen" 
-            allowfullscreen="" 
-            webkitallowfullscreen="">
-        </iframe>
-    </div>
+    <iframe id="fancade" src="https://play.fancade.com/5F084A0BCE06B710?max_w=2800&max_h=2800" title="Fancade"></iframe>
 
 </body>
 </html>
