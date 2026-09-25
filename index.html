@@ -3,30 +3,22 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Fancade Embed</title>
-    <style>
-        /* Reset margins and overflow to ensure a true full-screen layout */
-        html, body {
-            margin: 0;
-            padding: 0;
-            width: 100%;
-            height: 100%;
-            overflow: hidden;
-            background-color: #121212; /* Dark background color while loading */
-        }
-
-        /* Style the iframe to fill the entire viewport */
-        #fancade {
-            display: block;
-            width: 100%;
-            height: 100%;
-            border: none;
-        }
-    </style>
+    <title>Fancade Portal</title>
+    <link rel="stylesheet" href="style.css">
 </head>
 <body>
 
-    <iframe id="fancade" src="https://play.fancade.com/5F084A0BCE06B710?max_w=2800&max_h=2800" title="Fancade"></iframe>
+    <!-- 
+      The sandbox attribute blocks popups, modal windows, and top-level navigation 
+      while explicitly allowing scripts, pointer-locking, and same-origin execution 
+      so the game functions normally without letting ad redirects break out.
+    -->
+    <iframe id="fancade" 
+            src="https://play.fancade.com/5F084A0BCE06B710?max_w=2800&max_h=2800" 
+            title="Fancade"
+            sandbox="allow-scripts allow-same-origin allow-pointer-lock">
+    </iframe>
 
+    <script src="script.js"></script>
 </body>
 </html>
