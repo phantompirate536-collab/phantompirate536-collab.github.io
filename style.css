@@ -1,3 +1,4 @@
+/* Reset window layout boundaries to eliminate scrollbars */
 html, body {
     margin: 0;
     padding: 0;
@@ -7,6 +8,7 @@ html, body {
     background-color: #121212;
 }
 
+/* Force the game container iframe to cover the entire screen */
 #fancade {
     display: block;
     width: 100%;
